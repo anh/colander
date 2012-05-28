@@ -824,7 +824,10 @@ class Sequence(Positional, SchemaType):
             next_name, rest = path.split('.', 1)
             index = int(next_name)
             next_node = node.children[0]
-            next_appstruct = appstruct[index]
+            if node.typ.accept_scalar and not isinstance(appstruct, list):
+                next_appstruct = appstruct 
+            else:
+                next_appstruct = appstruct[index]
             appstruct[index] = next_node.typ.set_value(
                 next_node, next_appstruct, rest, value)
         else:
